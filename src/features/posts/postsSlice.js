@@ -25,6 +25,16 @@ export const fetchPostById = createAsyncThunk(
   },
 );
 
+export const deletePostById = createAsyncThunk(
+  'posts/deletePostById',
+  async (postId) => {
+    const response = await client.delete(
+      `https://jsonplaceholder.typicode.com/posts/${postId}`,
+    );
+    return { ...response.data, id: postId };
+  },
+);
+
 export const addNewPost = createAsyncThunk(
   'posts/addNewPost',
   async (initialPost) => {
@@ -97,6 +107,15 @@ const postsSlice = createSlice({
       .addCase(fetchPostById.rejected, (state, action) => {
         state.searchStatus = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(deletePostById.fulfilled, (state, action) => {
+        const { id } = action.payload;
+        const existingPostIndex = state.data.findIndex(
+          (post) => post.id === id,
+        );
+        if (existingPostIndex !== -1) {
+          state.data.splice(existingPostIndex, 1);
+        }
       });
   },
 });

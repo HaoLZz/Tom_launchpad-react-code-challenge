@@ -38,7 +38,7 @@ export default function AddPostModal() {
       try {
         setAddRequestStatus('pending');
         await dispatch(
-          addNewPost({ title, content, userId: nanoid() }),
+          addNewPost({ title, body: content, userId: nanoid() }),
         ).unwrap();
         setTitle('');
         setContent('');

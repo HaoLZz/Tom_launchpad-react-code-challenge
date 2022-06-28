@@ -47,3 +47,7 @@ client.post = function (endpoint, body, customConfig = {}) {
 client.put = function (endpoint, body, customConfig = {}) {
   return client(endpoint, 'PUT', { ...customConfig, body });
 };
+
+client.delete = function (endpoint, customConfig = {}) {
+  return client(endpoint, 'DELETE', { ...customConfig });
+};

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAllPosts, fetchPosts } from './postsSlice';
+import { selectAllPosts, fetchPosts, deletePostById } from './postsSlice';
 
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -15,20 +15,20 @@ import EditPostModal from './EditPostModal';
 import { Spinner } from '../../components/Spinner';
 import PostSearchBar from './PostSearchBar';
 
-const PostControlsButtonGroup = ({ post }) => {
-  return (
-    <ButtonGroup
-      variant="text"
-      color="primary"
-      aria-label="secondary text button group"
-    >
-      <EditPostModal post={post} />
-      <Button>
-        <DeleteIcon fontSize="small" />
-      </Button>
-    </ButtonGroup>
-  );
-};
+// const PostControlsButtonGroup = ({ post, deletePostHandler }) => {
+//   return (
+//     <ButtonGroup
+//       variant="text"
+//       color="primary"
+//       aria-label="secondary text button group"
+//     >
+//       <EditPostModal post={post} />
+//       <Button onClick={(post) => deletePostHandler(post)}>
+//         <DeleteIcon fontSize="small" />
+//       </Button>
+//     </ButtonGroup>
+//   );
+// };
 
 export default function PostsList() {
   // Lifted searchInput state from PostSearchBar to parent
@@ -40,13 +40,17 @@ export default function PostsList() {
   const searchStatus = useSelector((state) => state.posts.searchStatus);
   const posts = useSelector(selectAllPosts);
 
+  const deletePostHandler = (post) => {
+    dispatch(deletePostById(post.id));
+  };
+
   useEffect(() => {
     if (postStatus === 'idle') {
       dispatch(fetchPosts());
     }
   }, [postStatus, dispatch]);
 
-  //   If SearchBar is active, then display searchResult or else all posts are shown on the home screen.
+  //   If SearchBar is active, then display searchResult else all posts are shown on the home screen.
   const postsForRender =
     searchStatus === 'succeeded' && searchInput === String(searchResult.id)
       ? [searchResult]
@@ -66,7 +70,16 @@ export default function PostsList() {
           <Typography variant="h5" component="h3" noWrap>
             {post.title}
           </Typography>
-          <PostControlsButtonGroup post={post} />
+          <ButtonGroup
+            variant="text"
+            color="primary"
+            aria-label="secondary text button group"
+          >
+            <EditPostModal post={post} />
+            <Button onClick={() => deletePostHandler(post)}>
+              <DeleteIcon fontSize="small" />
+            </Button>
+          </ButtonGroup>
         </Box>
         <Box marginBottom={1}>
           <Typography variant="subtitle1" component="span">
