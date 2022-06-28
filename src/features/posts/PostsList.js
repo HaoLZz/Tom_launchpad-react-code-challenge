@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { selectAllPosts } from './postsSlice';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -26,7 +27,7 @@ const PostControlsButtonGroup = ({ post }) => {
 };
 
 export const PostsList = () => {
-  const posts = useSelector((state) => state.posts);
+  const posts = useSelector(selectAllPosts);
 
   const renderedPosts = posts.map((post) => (
     <Grid item xs={12} md={4} flexShrink={1} key={post.id}>

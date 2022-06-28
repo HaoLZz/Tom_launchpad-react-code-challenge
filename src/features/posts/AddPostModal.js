@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
 import { postAdded } from './postsSlice';
 
 import Button from '@mui/material/Button';
@@ -34,13 +33,7 @@ export default function AddPostModal() {
 
   const onSavePostClicked = () => {
     if (title && content) {
-      dispatch(
-        postAdded({
-          id: nanoid(),
-          title,
-          body: content,
-        }),
-      );
+      dispatch(postAdded(title, content));
 
       setTitle('');
       setContent('');
