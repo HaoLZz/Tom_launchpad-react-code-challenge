@@ -33,10 +33,12 @@ const PostControlsButtonGroup = ({ post }) => {
 export default function PostsList() {
   // Lifted searchInput state from PostSearchBar to parent
   const [searchInput, setSearchInput] = useState('');
-  const posts = useSelector(selectAllPosts);
   const dispatch = useDispatch();
   const postStatus = useSelector((state) => state.posts.status);
   const error = useSelector((state) => state.posts.error);
+  const searchResult = useSelector((state) => state.posts.searchResult);
+  const searchStatus = useSelector((state) => state.posts.searchStatus);
+  const posts = useSelector(selectAllPosts);
 
   useEffect(() => {
     if (postStatus === 'idle') {
@@ -44,7 +46,11 @@ export default function PostsList() {
     }
   }, [postStatus, dispatch]);
 
-  const renderedPosts = posts.map((post) => (
+  //   If SearchBar is active, then display searchResult or else all posts are shown on the home screen.
+  const postsForRender =
+    searchStatus === 'succeeded' && searchInput ? [searchResult] : posts;
+
+  const renderedPosts = postsForRender.map((post) => (
     <Grid item xs={12} md={4} flexShrink={1} key={post.id}>
       <Paper elevation={3} sx={{ paddingX: 2, paddingY: 1 }}>
         <Box

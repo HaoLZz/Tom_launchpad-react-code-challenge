@@ -4,6 +4,8 @@ const initialState = {
   data: [],
   status: 'idle',
   error: null,
+  searchStatus: 'idle',
+  searchResult: {},
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
@@ -74,11 +76,12 @@ const postsSlice = createSlice({
         }
       })
       .addCase(fetchPostById.pending, (state, action) => {
-        state.status = 'loading';
+        state.searchStatus = 'loading';
       })
       .addCase(fetchPostById.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.searchStatus = 'succeeded';
         const { id, title, body } = action.payload;
+        state.searchResult = action.payload;
         const existingPost = state.data.find((post) => post.id === id);
         if (!existingPost) {
           state.data.push(action.payload);
@@ -88,13 +91,11 @@ const postsSlice = createSlice({
         }
       })
       .addCase(fetchPostById.rejected, (state, action) => {
-        state.status = 'failed';
+        state.searchStatus = 'failed';
         state.error = action.error.message;
       });
   },
 });
-
-export const { postAdded, postUpdated } = postsSlice.actions;
 
 export const selectAllPosts = (state) => state.posts.data;
 
