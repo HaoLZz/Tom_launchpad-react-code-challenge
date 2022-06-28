@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddPostModal from './AddPostModal';
 import EditPostModal from './EditPostModal';
 import { Spinner } from '../../components/Spinner';
+import PostSearchBar from './PostSearchBar';
 
 const PostControlsButtonGroup = ({ post }) => {
   return (
@@ -29,7 +30,7 @@ const PostControlsButtonGroup = ({ post }) => {
   );
 };
 
-export const PostsList = () => {
+export default function PostsList() {
   const posts = useSelector(selectAllPosts);
   const dispatch = useDispatch();
   const postStatus = useSelector((state) => state.posts.status);
@@ -86,7 +87,14 @@ export const PostsList = () => {
       <Typography variant="h2" component="h2" marginY={5}>
         Posts
       </Typography>
-      <Box textAlign="right" marginBottom={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '25px',
+        }}
+      >
+        <PostSearchBar />
         <AddPostModal />
       </Box>
       <Grid container spacing={5}>
@@ -94,4 +102,4 @@ export const PostsList = () => {
       </Grid>
     </>
   );
-};
+}
