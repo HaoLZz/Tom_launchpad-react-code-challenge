@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { postUpdated } from './postsSlice';
+import { updatePost } from './postsSlice';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -27,13 +27,27 @@ export default function EditPostModal({ post }) {
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
-
+  const [addRequestStatus, setAddRequestStatus] = useState('idle');
   const dispatch = useDispatch();
 
-  const onSavePostClicked = () => {
-    if (title && content) {
-      dispatch(postUpdated({ id: post.id, title, body: content }));
-      setOpen(false);
+  const onSavePostClicked = async () => {
+    if (title && content && addRequestStatus === 'idle') {
+      try {
+        setAddRequestStatus('pending');
+        await dispatch(
+          updatePost({
+            id: post.id,
+            userId: post.userId,
+            title,
+            body: content,
+          }),
+        ).unwrap();
+        setOpen(false);
+      } catch (err) {
+        console.error('Failed to save the post: ', err);
+      } finally {
+        setAddRequestStatus('idle');
+      }
     }
   };
 

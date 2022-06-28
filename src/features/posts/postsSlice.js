@@ -24,19 +24,21 @@ export const addNewPost = createAsyncThunk(
   },
 );
 
+export const updatePost = createAsyncThunk(
+  'posts/updatePost',
+  async (initialPost) => {
+    const response = await client.put(
+      `https://jsonplaceholder.typicode.com/posts/${initialPost.id}`,
+      initialPost,
+    );
+    return response.data;
+  },
+);
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {
-    postUpdated(state, action) {
-      const { id, title, body } = action.payload;
-      const existingPost = state.data.find((post) => post.id === id);
-      if (existingPost) {
-        existingPost.title = title;
-        existingPost.body = body;
-      }
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state, action) => {
@@ -52,6 +54,14 @@ const postsSlice = createSlice({
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
         state.data.push(action.payload);
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        const { id, title, body } = action.payload;
+        const existingPost = state.data.find((post) => post.id === id);
+        if (existingPost) {
+          existingPost.title = title;
+          existingPost.body = body;
+        }
       });
   },
 });
