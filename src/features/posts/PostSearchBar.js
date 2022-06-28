@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchPostById } from './postsSlice';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
@@ -46,9 +48,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PostSearchBar() {
-  const [searchInput, setSearchInput] = useState('');
-  const onSearchInput = (e) => setSearchInput(e.target.value);
+export default function PostSearchBar({ searchInput = '', setSearchInput }) {
+  const dispatch = useDispatch();
+
+  const onSearchInput = (e) => {
+    setSearchInput(e.target.value);
+    const postId = Number.parseInt(e.target.value);
+    if (!Number.isNaN(postId)) {
+      dispatch(fetchPostById(postId));
+    }
+  };
 
   return (
     <Box>

@@ -13,6 +13,16 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return response.data;
 });
 
+export const fetchPostById = createAsyncThunk(
+  'posts/fetchPostById',
+  async (postId) => {
+    const response = await client.get(
+      `https://jsonplaceholder.typicode.com/posts/${postId}`,
+    );
+    return response.data;
+  },
+);
+
 export const addNewPost = createAsyncThunk(
   'posts/addNewPost',
   async (initialPost) => {
@@ -46,7 +56,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = state.data.concat(action.payload);
+        state.data = action.payload;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
@@ -62,6 +72,24 @@ const postsSlice = createSlice({
           existingPost.title = title;
           existingPost.body = body;
         }
+      })
+      .addCase(fetchPostById.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPostById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const { id, title, body } = action.payload;
+        const existingPost = state.data.find((post) => post.id === id);
+        if (!existingPost) {
+          state.data.push(action.payload);
+        } else {
+          existingPost.title = title;
+          existingPost.body = body;
+        }
+      })
+      .addCase(fetchPostById.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
       });
   },
 });

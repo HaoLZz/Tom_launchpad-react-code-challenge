@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAllPosts, fetchPosts } from './postsSlice';
 
@@ -31,6 +31,8 @@ const PostControlsButtonGroup = ({ post }) => {
 };
 
 export default function PostsList() {
+  // Lifted searchInput state from PostSearchBar to parent
+  const [searchInput, setSearchInput] = useState('');
   const posts = useSelector(selectAllPosts);
   const dispatch = useDispatch();
   const postStatus = useSelector((state) => state.posts.status);
@@ -94,7 +96,10 @@ export default function PostsList() {
           marginBottom: '25px',
         }}
       >
-        <PostSearchBar />
+        <PostSearchBar
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+        />
         <AddPostModal />
       </Box>
       <Grid container spacing={5}>
