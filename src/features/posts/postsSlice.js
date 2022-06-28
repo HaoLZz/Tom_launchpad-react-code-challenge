@@ -1,31 +1,17 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit';
+import { client } from '../../api/client';
+const initialState = {
+  data: [],
+  status: 'idle',
+  error: null,
+};
 
-const initialState = [
-  {
-    userId: 1,
-    id: 1,
-    title: 'First Post',
-    body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae deleniti architecto sit expedita, quia perspiciatis, delectus, excepturi tenetur dolorem accusamus at temporibus qui nesciunt quasi!',
-  },
-  {
-    userId: 1,
-    id: 2,
-    title: 'Second Post',
-    body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae deleniti architecto sit expedita, quia perspiciatis, delectus, excepturi tenetur dolorem accusamus at temporibus qui nesciunt quasi!amet consectetur adipisicing elitamet consectetur adipisicing elit',
-  },
-  {
-    userId: 2,
-    id: 3,
-    title: 'Another Post',
-    body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae deleniti architecto sit expedita, quia perspiciatis, delectus, excepturi tenetur dolorem accusamus at temporibus qui nesciunt quasi!',
-  },
-  {
-    userId: 2,
-    id: 4,
-    title: 'New Post from someone',
-    body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae deleniti architecto sit expedita, quia perspiciatis, delectus, excepturi tenetur dolorem accusamus at temporibus qui nesciunt quasi!',
-  },
-];
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+  const response = await client.get(
+    'https://jsonplaceholder.typicode.com/posts?%20_start=0&_limit=20',
+  );
+  return response.data;
+});
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -33,7 +19,7 @@ const postsSlice = createSlice({
   reducers: {
     postAdded: {
       reducer(state, action) {
-        state.push(action.payload);
+        state.data.push(action.payload);
       },
       prepare(title, content) {
         return {
@@ -47,20 +33,34 @@ const postsSlice = createSlice({
     },
     postUpdated(state, action) {
       const { id, title, body } = action.payload;
-      const existingPost = state.find((post) => post.id === id);
+      const existingPost = state.data.find((post) => post.id === id);
       if (existingPost) {
         existingPost.title = title;
         existingPost.body = body;
       }
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchPosts.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.data = state.data.concat(action.payload);
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      });
+  },
 });
 
 export const { postAdded, postUpdated } = postsSlice.actions;
 
-export const selectAllPosts = (state) => state.posts;
+export const selectAllPosts = (state) => state.posts.data;
 
 export const selectPostById = (state, postId) =>
-  state.posts.find((post) => post.id === postId);
+  state.posts.data.find((post) => post.id === postId);
 
 export default postsSlice.reducer;

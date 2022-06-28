@@ -1,6 +1,7 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectAllPosts } from './postsSlice';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAllPosts, fetchPosts } from './postsSlice';
+
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -8,14 +9,16 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 import AddPostModal from './AddPostModal';
 import EditPostModal from './EditPostModal';
+import { Spinner } from '../../components/Spinner';
 
 const PostControlsButtonGroup = ({ post }) => {
   return (
     <ButtonGroup
       variant="text"
-      color="secondary"
+      color="primary"
       aria-label="secondary text button group"
     >
       <EditPostModal post={post} />
@@ -28,6 +31,15 @@ const PostControlsButtonGroup = ({ post }) => {
 
 export const PostsList = () => {
   const posts = useSelector(selectAllPosts);
+  const dispatch = useDispatch();
+  const postStatus = useSelector((state) => state.posts.status);
+  const error = useSelector((state) => state.posts.error);
+
+  useEffect(() => {
+    if (postStatus === 'idle') {
+      dispatch(fetchPosts());
+    }
+  }, [postStatus, dispatch]);
 
   const renderedPosts = posts.map((post) => (
     <Grid item xs={12} md={4} flexShrink={1} key={post.id}>
@@ -59,6 +71,16 @@ export const PostsList = () => {
     </Grid>
   ));
 
+  let contentToRender;
+
+  if (postStatus === 'loading') {
+    contentToRender = <Spinner text="Loading ..." />;
+  } else if (postStatus === 'failed') {
+    contentToRender = <div>{error}</div>;
+  } else if (postStatus === 'succeeded') {
+    contentToRender = renderedPosts;
+  }
+
   return (
     <>
       <Typography variant="h2" component="h2" marginY={5}>
@@ -68,7 +90,7 @@ export const PostsList = () => {
         <AddPostModal />
       </Box>
       <Grid container spacing={5}>
-        {renderedPosts}
+        {contentToRender}
       </Grid>
     </>
   );
