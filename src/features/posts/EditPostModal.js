@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { postUpdated } from './postsSlice';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -14,7 +14,6 @@ import FormControl from '@mui/material/FormControl';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditPostModal({ post }) {
-  console.log(post);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,6 +32,7 @@ export default function EditPostModal({ post }) {
 
   const onSavePostClicked = () => {
     if (title && content) {
+      dispatch(postUpdated({ id: post.id, title, body: content }));
       setOpen(false);
     }
   };
@@ -43,7 +43,7 @@ export default function EditPostModal({ post }) {
         <EditIcon fontSize="small" />
       </Button>
       <Dialog fullWidth open={open} onClose={handleClose}>
-        <DialogTitle>Edit post</DialogTitle>
+        <DialogTitle>Edit Post</DialogTitle>
         <DialogContent>
           <Box
             noValidate
