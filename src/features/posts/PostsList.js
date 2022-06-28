@@ -6,20 +6,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddPostModal from './AddPostModal';
+import EditPostModal from './EditPostModal';
 
-const PostControlsButtonGroup = () => {
+const PostControlsButtonGroup = ({ post }) => {
   return (
     <ButtonGroup
       variant="text"
       color="secondary"
       aria-label="secondary text button group"
     >
-      <Button>
-        <EditIcon fontSize="small" />
-      </Button>
+      <EditPostModal post={post} />
       <Button>
         <DeleteIcon fontSize="small" />
       </Button>
@@ -44,7 +42,7 @@ export const PostsList = () => {
           <Typography variant="h5" component="h3" noWrap>
             {post.title}
           </Typography>
-          <PostControlsButtonGroup />
+          <PostControlsButtonGroup post={post} />
         </Box>
         <Box marginBottom={1}>
           <Typography variant="subtitle1" component="span">
@@ -53,8 +51,7 @@ export const PostsList = () => {
         </Box>
         <Box>
           <Typography variant="body1" component="p" overflow="hidden">
-            {/* Show an excerpt of the post's content */}
-            {post.body.substring(0, 100)}
+            {post.body}
           </Typography>
         </Box>
       </Paper>
