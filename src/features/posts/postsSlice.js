@@ -19,6 +19,12 @@ const initialState = [
     title: 'Another Post',
     body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae deleniti architecto sit expedita, quia perspiciatis, delectus, excepturi tenetur dolorem accusamus at temporibus qui nesciunt quasi!',
   },
+  {
+    userId: 2,
+    id: 4,
+    title: 'New Post from someone',
+    body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae deleniti architecto sit expedita, quia perspiciatis, delectus, excepturi tenetur dolorem accusamus at temporibus qui nesciunt quasi!',
+  },
 ];
 
 const postsSlice = createSlice({
