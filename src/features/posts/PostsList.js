@@ -48,7 +48,9 @@ export default function PostsList() {
 
   //   If SearchBar is active, then display searchResult or else all posts are shown on the home screen.
   const postsForRender =
-    searchStatus === 'succeeded' && searchInput ? [searchResult] : posts;
+    searchStatus === 'succeeded' && searchInput === String(searchResult.id)
+      ? [searchResult]
+      : posts;
 
   const renderedPosts = postsForRender.map((post) => (
     <Grid item xs={12} md={4} flexShrink={1} key={post.id}>

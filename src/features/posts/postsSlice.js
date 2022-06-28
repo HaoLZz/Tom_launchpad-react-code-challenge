@@ -5,7 +5,7 @@ const initialState = {
   status: 'idle',
   error: null,
   searchStatus: 'idle',
-  searchResult: {},
+  searchResult: null,
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
@@ -50,7 +50,11 @@ export const updatePost = createAsyncThunk(
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    resetSearchResult(state, action) {
+      state.searchResult = null;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state, action) => {
@@ -96,6 +100,8 @@ const postsSlice = createSlice({
       });
   },
 });
+
+export const { resetSearchResult } = postsSlice.actions;
 
 export const selectAllPosts = (state) => state.posts.data;
 
