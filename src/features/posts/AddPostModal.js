@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { postAdded } from './postsSlice';
+import { addNewPost } from './postsSlice';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -13,6 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
+import { nanoid } from '@reduxjs/toolkit';
 
 export default function AddPostModal() {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function AddPostModal() {
     setOpen(false);
   };
 
+  const [addRequestStatus, setAddRequestStatus] = useState('idle');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -31,13 +33,21 @@ export default function AddPostModal() {
 
   const dispatch = useDispatch();
 
-  const onSavePostClicked = () => {
-    if (title && content) {
-      dispatch(postAdded(title, content));
-
-      setTitle('');
-      setContent('');
-      setOpen(false);
+  const onSavePostClicked = async () => {
+    if (title && content && addRequestStatus === 'idle') {
+      try {
+        setAddRequestStatus('pending');
+        await dispatch(
+          addNewPost({ title, content, userId: nanoid() }),
+        ).unwrap();
+        setTitle('');
+        setContent('');
+        setOpen(false);
+      } catch (err) {
+        console.error('Failed to save the post: ', err);
+      } finally {
+        setAddRequestStatus('idle');
+      }
     }
   };
 

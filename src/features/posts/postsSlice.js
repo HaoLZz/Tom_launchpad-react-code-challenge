@@ -13,24 +13,21 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return response.data;
 });
 
+export const addNewPost = createAsyncThunk(
+  'posts/addNewPost',
+  async (initialPost) => {
+    const response = await client.post(
+      'https://jsonplaceholder.typicode.com/posts',
+      initialPost,
+    );
+    return response.data;
+  },
+);
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: {
-      reducer(state, action) {
-        state.data.push(action.payload);
-      },
-      prepare(title, content) {
-        return {
-          payload: {
-            id: nanoid(),
-            title,
-            body: content,
-          },
-        };
-      },
-    },
     postUpdated(state, action) {
       const { id, title, body } = action.payload;
       const existingPost = state.data.find((post) => post.id === id);
@@ -52,6 +49,9 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        state.data.push(action.payload);
       });
   },
 });
