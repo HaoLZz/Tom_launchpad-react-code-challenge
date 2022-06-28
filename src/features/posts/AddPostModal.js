@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
+import { postAdded } from './postsSlice';
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -25,6 +29,24 @@ export default function AddPostModal() {
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
+
+  const dispatch = useDispatch();
+
+  const onSavePostClicked = () => {
+    if (title && content) {
+      dispatch(
+        postAdded({
+          id: nanoid(),
+          title,
+          body: content,
+        }),
+      );
+
+      setTitle('');
+      setContent('');
+      setOpen(false);
+    }
+  };
 
   return (
     <>
@@ -74,7 +96,7 @@ export default function AddPostModal() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleClose}>Save Post</Button>
+          <Button onClick={onSavePostClicked}>Save Post</Button>
         </DialogActions>
       </Dialog>
     </>

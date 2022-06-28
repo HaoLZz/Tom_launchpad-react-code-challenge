@@ -31,7 +31,7 @@ export const PostsList = () => {
   const posts = useSelector((state) => state.posts);
 
   const renderedPosts = posts.map((post) => (
-    <Grid item xs={12} md={4} key={post.id}>
+    <Grid item xs={12} md={4} flexShrink={1} key={post.id}>
       <Paper elevation={3} sx={{ paddingX: 2, paddingY: 1 }}>
         <Box
           marginBottom={2}
@@ -41,7 +41,7 @@ export const PostsList = () => {
             alignItems: 'center',
           }}
         >
-          <Typography variant="h5" component="h3">
+          <Typography variant="h5" component="h3" noWrap>
             {post.title}
           </Typography>
           <PostControlsButtonGroup />
@@ -52,7 +52,7 @@ export const PostsList = () => {
           </Typography>
         </Box>
         <Box>
-          <Typography variant="body1" component="p">
+          <Typography variant="body1" component="p" overflow="hidden">
             {/* Show an excerpt of the post's content */}
             {post.body.substring(0, 100)}
           </Typography>
