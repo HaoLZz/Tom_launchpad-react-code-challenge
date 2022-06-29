@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import UniversityCard from './UniversityCard';
 import { Spinner } from '../../components/Spinner';
+import UniversitiesPagination from './UniversitiesPagination';
 
 export default function UniversitiesPage() {
   const universities = useSelector(selectAllUniversities);
@@ -42,6 +43,7 @@ export default function UniversitiesPage() {
             );
           })}
         </Box>
+        <UniversitiesPagination />
       </Box>
     </Container>
   );
