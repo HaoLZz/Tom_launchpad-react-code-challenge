@@ -7,7 +7,7 @@ export const fetchCountries = createAsyncThunk(
     const response = await client.get(
       'https://countriesnow.space/api/v0.1/countries/info?returns=none',
     );
-    return response.data.data;
+    return response.data;
   },
 );
 
@@ -28,11 +28,12 @@ const countriesSlice = createSlice({
       })
       .addCase(fetchCountries.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = action.payload;
+        //  Extract country names from API response and sort them in alphabetical order
+        state.data = action.payload.data.map((country) => country.name).sort();
       })
       .addCase(fetchCountries.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = 'Failed to fetch countries';
       });
   },
 });

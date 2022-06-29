@@ -15,6 +15,7 @@ export default function UniversitiesPage() {
   const universitiesStatus = useSelector((state) => state.universities.status);
   const error = useSelector((state) => state.universities.error);
   const dispatch = useDispatch();
+  const [countrySelected, setCountrySelected] = useState('Canada');
 
   const [currentPage, setCurrentPage] = useState(1);
   const num_of_universities = universities.length;
@@ -31,9 +32,10 @@ export default function UniversitiesPage() {
 
   useEffect(() => {
     if (universitiesStatus === 'idle') {
-      dispatch(fetchUniversities());
+      dispatch(fetchUniversities(countrySelected));
+      setCurrentPage(1);
     }
-  }, [universitiesStatus, dispatch]);
+  }, [universitiesStatus, dispatch, countrySelected]);
 
   if (universitiesStatus === 'loading') {
     return <Spinner />;
@@ -59,7 +61,10 @@ export default function UniversitiesPage() {
       >
         Give Your Rating for Universities around the world
       </Typography>
-      <CountriesMenu />
+      <CountriesMenu
+        countrySelected={countrySelected}
+        setCountrySelected={setCountrySelected}
+      />
       <Box sx={{ width: 1 }}>
         <Box
           sx={{

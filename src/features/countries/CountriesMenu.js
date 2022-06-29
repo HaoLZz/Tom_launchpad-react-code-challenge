@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAllCountries, fetchCountries } from './countriesSlice';
+import { resetUniversitiesStatus } from '../universities/universitiesSlice';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -9,23 +10,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Spinner } from '../../components/Spinner';
 
-// const options = [
-//   'Countries',
-//   'Germany',
-//   'Argentina',
-//   'Australia',
-//   'Ireland',
-//   'Canada',
-//   'Hong Kong',
-// ];
-
-export default function CountriesMenu() {
+export default function CountriesMenu({ countrySelected, setCountrySelected }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
   const countries = useSelector(selectAllCountries);
-  const countryNames = countries.map((country) => country.name);
-  const options = ['Countries', ...countryNames];
+  const options = ['Countries', ...countries];
+  const selectedIndex = options.indexOf(countrySelected);
   const countriesStatus = useSelector((state) => state.countries.status);
   const error = useSelector((state) => state.countries.error);
   const dispatch = useDispatch();
@@ -36,8 +25,9 @@ export default function CountriesMenu() {
   };
 
   const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
     setAnchorEl(null);
+    setCountrySelected(options[index]);
+    dispatch(resetUniversitiesStatus());
   };
 
   const handleClose = () => {

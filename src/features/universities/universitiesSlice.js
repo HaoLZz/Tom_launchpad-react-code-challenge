@@ -3,9 +3,9 @@ import { client } from '../../api/client';
 
 export const fetchUniversities = createAsyncThunk(
   'universities/fetchUniversities',
-  async () => {
+  async (country) => {
     const response = await client.get(
-      'http://universities.hipolabs.com/search?country=Canada',
+      `http://universities.hipolabs.com/search?country=${country}`,
     );
     return response.data;
   },
@@ -20,7 +20,11 @@ const initialState = {
 const universitiesSlice = createSlice({
   name: 'universities',
   initialState,
-  reducers: {},
+  reducers: {
+    resetUniversitiesStatus(state, action) {
+      state.status = 'idle';
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchUniversities.pending, (state, action) => {
@@ -36,6 +40,8 @@ const universitiesSlice = createSlice({
       });
   },
 });
+
+export const { resetUniversitiesStatus } = universitiesSlice.actions;
 
 export const selectAllUniversities = (state) => state.universities.data;
 
