@@ -5,8 +5,10 @@ import { selectAllUniversities, fetchUniversities } from './universitiesSlice';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import UniversityCard from './UniversityCard';
+import Typography from '@mui/material/Typography';
 import { Spinner } from '../../components/Spinner';
 import UniversitiesPagination from './UniversitiesPagination';
+import CountriesMenu from '../countries/CountriesMenu';
 
 export default function UniversitiesPage() {
   const universities = useSelector(selectAllUniversities);
@@ -48,6 +50,16 @@ export default function UniversitiesPage() {
 
   return (
     <Container>
+      <Typography
+        variant="h4"
+        component="h2"
+        marginTop={5}
+        gutterBottom
+        textTransform="capitalize"
+      >
+        Give Your Rating for Universities around the world
+      </Typography>
+      <CountriesMenu />
       <Box sx={{ width: 1 }}>
         <Box
           sx={{
