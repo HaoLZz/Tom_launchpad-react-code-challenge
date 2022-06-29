@@ -66,20 +66,26 @@ export default function UniversitiesPage() {
         setCountrySelected={setCountrySelected}
       />
       <Box sx={{ width: 1 }}>
-        <Box
-          sx={{
-            display: { xs: 'block', md: 'grid' },
-          }}
-          gridTemplateColumns="repeat(12, 1fr)"
-          gridAutoRows="1fr"
-          gap={2}
-        >
-          {universitiesToRender.map((university) => {
-            return (
-              <UniversityCard key={university.name} university={university} />
-            );
-          })}
-        </Box>
+        {num_of_universities === 0 ? (
+          <Box textAlign="center">
+            We could not find any universities in {countrySelected}
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: { xs: 'block', md: 'grid' },
+            }}
+            gridTemplateColumns="repeat(12, 1fr)"
+            gridAutoRows="1fr"
+            gap={2}
+          >
+            {universitiesToRender.map((university) => {
+              return (
+                <UniversityCard key={university.name} university={university} />
+              );
+            })}
+          </Box>
+        )}
         <UniversitiesPagination
           totalPages={totalPagesNum}
           currentPage={currentPage}
