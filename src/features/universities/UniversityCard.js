@@ -22,9 +22,10 @@ export default function UniversityCard({ university }) {
     >
       <CardContent>
         <Typography
-          sx={{ fontSize: '1.5rem' }}
+          sx={{ fontSize: '1.25rem' }}
           color="text.secondary"
           gutterBottom
+          noWrap
         >
           {university.name}
         </Typography>
@@ -34,7 +35,7 @@ export default function UniversityCard({ university }) {
             width: 35,
             height: 35,
             position: 'absolute',
-            top: 5,
+            bottom: 5,
             right: 5,
           }}
         >

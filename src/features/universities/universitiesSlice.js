@@ -1,66 +1,42 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { client } from '../../api/client';
 
-const initialState = [
-  {
-    domains: ['cstj.qc.ca'],
-    web_pages: [
-      'https://www.cstj.qc.ca',
-      'https://ccmt.cstj.qc.ca',
-      'https://ccml.cstj.qc.ca',
-    ],
-    'state-province': null,
-    name: 'C\u00e9gep de Saint-J\u00e9r\u00f4me',
-    country: 'Canada',
-    alpha_two_code: 'CA',
+export const fetchUniversities = createAsyncThunk(
+  'universities/fetchUniversities',
+  async () => {
+    const response = await client.get(
+      'http://universities.hipolabs.com/search?country=Canada',
+    );
+    return response.data;
   },
-  {
-    domains: ['lambtoncollege.ca', 'mylambton.ca'],
-    web_pages: ['https://www.lambtoncollege.ca'],
-    'state-province': 'Sarnia',
-    name: 'Lambton College',
-    country: 'Canada',
-    alpha_two_code: 'CA',
-  },
-  {
-    domains: ['acadiau.ca'],
-    web_pages: ['http://www.acadiau.ca/'],
-    'state-province': null,
-    name: 'Acadia University',
-    country: 'Canada',
-    alpha_two_code: 'CA',
-  },
-  {
-    domains: ['algonquincollege.com'],
-    web_pages: ['http://www.algonquincollege.com/'],
-    'state-province': null,
-    name: 'Algonquin College',
-    country: 'Canada',
-    alpha_two_code: 'CA',
-  },
-  {
-    domains: ['ashtoncollege.com'],
-    web_pages: ['http://www.ashtoncollege.com/'],
-    'state-province': null,
-    name: 'Ashton College',
-    country: 'Canada',
-    alpha_two_code: 'CA',
-  },
-  {
-    domains: ['assumptionu.ca'],
-    web_pages: ['http://www.assumptionu.ca/'],
-    'state-province': null,
-    name: 'Assumption University',
-    country: 'Canada',
-    alpha_two_code: 'CA',
-  },
-];
+);
+
+const initialState = {
+  data: [],
+  status: 'idle',
+  error: null,
+};
 
 const universitiesSlice = createSlice({
   name: 'universities',
   initialState,
   reducers: {},
+  extraReducers(builder) {
+    builder
+      .addCase(fetchUniversities.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchUniversities.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.data = action.payload;
+      })
+      .addCase(fetchUniversities.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      });
+  },
 });
 
-export const selectAllUniversities = (state) => state.universities;
+export const selectAllUniversities = (state) => state.universities.data;
 
 export default universitiesSlice.reducer;
