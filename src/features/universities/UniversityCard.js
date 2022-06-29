@@ -19,6 +19,7 @@ export default function UniversityCard({ university }) {
         gridColumn: 'span 4',
         marginBottom: { xs: '15px', md: '0' },
       }}
+      raised
     >
       <CardContent>
         <Typography
@@ -51,7 +52,7 @@ export default function UniversityCard({ university }) {
               return (
                 <Chip
                   key={page}
-                  label={page.slice(10)}
+                  label={page.slice(page.indexOf('.') + 1)}
                   component="a"
                   href={page}
                   size="small"
@@ -62,7 +63,7 @@ export default function UniversityCard({ university }) {
           </Stack>
         </Typography>
         <Typography color="text.secondary" variant="body2">
-          {university['state-province'] || 'n/a'}
+          {university['state-province'] || <br />}
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
           {university.country}
