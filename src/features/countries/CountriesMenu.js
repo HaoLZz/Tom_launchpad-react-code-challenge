@@ -8,6 +8,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import Box from '@mui/material/Box';
+import PublicIcon from '@mui/icons-material/Public';
 import { Spinner } from '../../components/Spinner';
 
 export default function CountriesMenu({ countrySelected, setCountrySelected }) {
@@ -62,7 +64,9 @@ export default function CountriesMenu({ countrySelected, setCountrySelected }) {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickListItem}
         >
+          <PublicIcon fontSize="medium" />
           <ListItemText
+            sx={{ marginLeft: '15px' }}
             primary="The country you selected is:"
             secondary={options[selectedIndex]}
           />

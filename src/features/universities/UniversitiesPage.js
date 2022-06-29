@@ -58,6 +58,7 @@ export default function UniversitiesPage() {
         marginTop={5}
         gutterBottom
         textTransform="capitalize"
+        sx={{ fontSize: { xs: '1.25rem', md: '2.5rem' } }}
       >
         Give Your Rating for Universities around the world
       </Typography>
@@ -86,11 +87,13 @@ export default function UniversitiesPage() {
             })}
           </Box>
         )}
-        <UniversitiesPagination
-          totalPages={totalPagesNum}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+          <UniversitiesPagination
+            totalPages={totalPagesNum}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </Box>
       </Box>
     </Container>
   );
