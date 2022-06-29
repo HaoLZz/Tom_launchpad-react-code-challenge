@@ -3,10 +3,18 @@ import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import PublicIcon from '@mui/icons-material/Public';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import PlaceIcon from '@mui/icons-material/Place';
+import MapIcon from '@mui/icons-material/Map';
 import PostalSearchBar from './PostalSearchBar';
+
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function PostalLookupPage() {
   const [searchInput, setSearchInput] = useState('');
+  const data = useSelector((state) => state.postal.data);
+  const [place] = data.places;
 
   return (
     <Container>
@@ -19,30 +27,58 @@ export default function PostalLookupPage() {
       />
       <Paper
         elevation={3}
-        sx={{ paddingX: 2, paddingY: 1, marginBottom: '1.5rem' }}
+        sx={{ paddingX: 3, paddingY: 2, marginBottom: '1.5rem' }}
       >
         <Box
           marginBottom={2}
           sx={{
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
+            gap: '1.5rem',
           }}
         >
-          <Typography variant="h5" component="h3" noWrap>
-            Postal Code
+          <MailOutlineIcon fontSize="large" />
+          <Typography variant="h5" component="h3">
+            {data['post code']}
           </Typography>
         </Box>
-        <Box marginBottom={1}>
+        <Box
+          marginBottom={2}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+          }}
+        >
+          <PublicIcon fontSize="large" />
           <Typography variant="subtitle1" component="span">
-            Coutry + country abbreviation
+            {`${data.country} (${data['country abbreviation']})`}
           </Typography>
         </Box>
-        <Box>
+        <Box
+          marginBottom={2}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+          }}
+        >
+          <PlaceIcon fontSize="large" />
           <Typography variant="body1" component="p" overflow="hidden">
-            "places": "place name": "Beverly Hills", "longitude": "-118.4065",
-            "state": "California", "state abbreviation": "CA", "latitude":
-            "34.0901"
+            {`${place['place name']} , ${place.state}(${place['state abbreviation']})`}
+          </Typography>
+        </Box>
+        <Box
+          marginBottom={2}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+          }}
+        >
+          <MapIcon fontSize="large" />
+          <Typography variant="body1" component="p" overflow="hidden">
+            {`Long. ${place.longitude} , Lat. ${place.latitude}`}
           </Typography>
         </Box>
       </Paper>
