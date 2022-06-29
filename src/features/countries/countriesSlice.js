@@ -7,7 +7,7 @@ export const fetchCountries = createAsyncThunk(
     const response = await client.get(
       'https://countriesnow.space/api/v0.1/countries/info?returns=none',
     );
-    return response.data;
+    return response.data.data;
   },
 );
 

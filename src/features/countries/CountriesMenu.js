@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAllCountries, fetchCountries } from './countriesSlice';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { Spinner } from '../../components/Spinner';
 
-const options = [
-  'Countries',
-  'Germany',
-  'Argentina',
-  'Australia',
-  'Ireland',
-  'Canada',
-  'Hong Kong',
-];
+// const options = [
+//   'Countries',
+//   'Germany',
+//   'Argentina',
+//   'Australia',
+//   'Ireland',
+//   'Canada',
+//   'Hong Kong',
+// ];
 
 export default function CountriesMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const countries = useSelector(selectAllCountries);
+  const countryNames = countries.map((country) => country.name);
+  const options = ['Countries', ...countryNames];
+  const countriesStatus = useSelector((state) => state.countries.status);
+  const error = useSelector((state) => state.countries.error);
+  const dispatch = useDispatch();
+
   const open = Boolean(anchorEl);
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
@@ -31,6 +43,18 @@ export default function CountriesMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    if (countriesStatus === 'idle') {
+      dispatch(fetchCountries());
+    }
+  }, [dispatch, countriesStatus]);
+
+  if (countriesStatus === 'loading') {
+    return <Spinner />;
+  } else if (countriesStatus === 'failed') {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
