@@ -43,13 +43,7 @@ const postalSlice = createSlice({
       })
       .addCase(fetchInfoByPostal.rejected, (state, action) => {
         state.status = 'failed';
-        const error = action.error;
-        state.error =
-          error &&
-          Object.keys(error).length === 0 &&
-          Object.getPrototypeOf(error) === Object.prototype
-            ? '404: This postal code does not exist'
-            : error.message;
+        state.error = action.error.message;
       });
   },
 });

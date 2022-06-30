@@ -1,44 +1,78 @@
 import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import PostalSearchBar from './PostalSearchBar';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchInfoByPostal } from './postalSlice';
-import { Spinner } from '../../components/Spinner';
 import InfoPanel from './InfoPanel';
 import MapContainer from './GoogleMap';
 
 export default function PostalLookupPage() {
   const [searchInput, setSearchInput] = useState('');
+  const [searchRequestStatus, setSearchRequestStatus] = useState('idle');
+  const [error, setError] = useState(null);
+
   const data = useSelector((state) => state.postal.data);
-  const postalStatus = useSelector((state) => state.postal.status);
-  const error = useSelector((state) => state.postal.error);
   const dispatch = useDispatch();
 
   // Destructure longitude and latitude and construct a center object to pass down to map component
   const [{ longitude, latitude }] = data.places;
   const center = { lat: Number(latitude), lng: Number(longitude) };
 
-  const onSubmit = () => {
-    // Check if the input is ok to submit(US post code is a five-digit number)
-    const canSubmit =
-      searchInput.length === 5 &&
-      !isNaN(searchInput) &&
-      ['idle', 'succeeded'].includes(postalStatus);
+  // Check if the input is ok to submit(US post code is a five-digit number)
+  const canSubmit =
+    searchInput.length === 5 &&
+    !isNaN(searchInput) &&
+    searchRequestStatus === 'idle';
+
+  const onSubmit = async () => {
     if (canSubmit) {
-      dispatch(fetchInfoByPostal(searchInput));
+      try {
+        setSearchRequestStatus('pending');
+        await dispatch(fetchInfoByPostal(searchInput)).unwrap();
+        setSearchInput('');
+        setError(null);
+      } catch (err) {
+        const error =
+          err &&
+          Object.keys(err).length === 0 &&
+          Object.getPrototypeOf(err) === Object.prototype
+            ? `404: Postal code ${searchInput} does not exist. Please search again.`
+            : err.message;
+        console.error(error);
+        setError(error);
+      } finally {
+        setSearchRequestStatus('idle');
+      }
     }
   };
 
-  let contentToRender;
-
-  if (postalStatus === 'loading') {
-    contentToRender = <Spinner />;
-  } else if (postalStatus === 'failed') {
-    contentToRender = <div>{error}</div>;
-  } else {
-    contentToRender = <InfoPanel data={data} />;
-  }
+  const contentToRender = !error ? (
+    <>
+      <InfoPanel data={data} />
+      <MapContainer center={center} />
+    </>
+  ) : (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '20vh',
+      }}
+    >
+      <Typography
+        variant="h5"
+        component="p"
+        color="#ef5350"
+        textTransform="capitalize"
+      >
+        {error}
+      </Typography>
+    </Box>
+  );
 
   return (
     <Container>
@@ -51,7 +85,6 @@ export default function PostalLookupPage() {
         onSubmit={onSubmit}
       />
       {contentToRender}
-      <MapContainer center={center} />
     </Container>
   );
 }
