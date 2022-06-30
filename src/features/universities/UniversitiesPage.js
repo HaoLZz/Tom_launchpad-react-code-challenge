@@ -13,9 +13,16 @@ import CountriesMenu from '../countries/CountriesMenu';
 export default function UniversitiesPage() {
   const universities = useSelector(selectAllUniversities);
   const universitiesStatus = useSelector((state) => state.universities.status);
+  const lastSearchedCountry = useSelector(
+    (state) => state.universities.lastSearchedCountry,
+  );
   const error = useSelector((state) => state.universities.error);
   const dispatch = useDispatch();
-  const [countrySelected, setCountrySelected] = useState('Canada');
+
+  // If there is no previous search for universities, set default country to Canada otherwise set to lastSearchedCountry
+  const initialCountry =
+    lastSearchedCountry === '' ? 'Canada' : lastSearchedCountry;
+  const [countrySelected, setCountrySelected] = useState(initialCountry);
 
   const [currentPage, setCurrentPage] = useState(1);
   const num_of_universities = universities.length;

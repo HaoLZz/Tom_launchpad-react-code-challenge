@@ -8,7 +8,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import Box from '@mui/material/Box';
 import PublicIcon from '@mui/icons-material/Public';
 import { Spinner } from '../../components/Spinner';
 

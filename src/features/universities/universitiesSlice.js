@@ -7,7 +7,7 @@ export const fetchUniversities = createAsyncThunk(
     const response = await client.get(
       `http://universities.hipolabs.com/search?country=${country}`,
     );
-    return response.data;
+    return { data: response.data, country };
   },
 );
 
@@ -15,6 +15,7 @@ const initialState = {
   data: [],
   status: 'idle',
   error: null,
+  lastSearchedCountry: '',
 };
 
 const universitiesSlice = createSlice({
@@ -32,7 +33,10 @@ const universitiesSlice = createSlice({
       })
       .addCase(fetchUniversities.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = action.payload;
+        const { data, country } = action.payload;
+        console.log(action.payload);
+        state.data = data;
+        state.lastSearchedCountry = country;
       })
       .addCase(fetchUniversities.rejected, (state, action) => {
         state.status = 'failed';
