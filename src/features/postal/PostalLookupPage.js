@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchInfoByPostal } from './postalSlice';
 import { Spinner } from '../../components/Spinner';
 import InfoPanel from './InfoPanel';
+import MapContainer from './GoogleMap';
 
 export default function PostalLookupPage() {
   const [searchInput, setSearchInput] = useState('');
@@ -47,7 +48,7 @@ export default function PostalLookupPage() {
         onSubmit={onSubmit}
       />
       {contentToRender}
-      <div>Goople Map</div>
+      <MapContainer />
     </Container>
   );
 }
