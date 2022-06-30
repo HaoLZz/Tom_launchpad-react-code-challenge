@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Container from '@mui/material/Container';
-
 import Typography from '@mui/material/Typography';
 import PostalSearchBar from './PostalSearchBar';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,6 +14,10 @@ export default function PostalLookupPage() {
   const postalStatus = useSelector((state) => state.postal.status);
   const error = useSelector((state) => state.postal.error);
   const dispatch = useDispatch();
+
+  // Destructure longitude and latitude and construct a center object to pass down to map component
+  const [{ longitude, latitude }] = data.places;
+  const center = { lat: Number(latitude), lng: Number(longitude) };
 
   const onSubmit = () => {
     // Check if the input is ok to submit(US post code is a five-digit number)
@@ -48,7 +51,7 @@ export default function PostalLookupPage() {
         onSubmit={onSubmit}
       />
       {contentToRender}
-      <MapContainer />
+      <MapContainer center={center} />
     </Container>
   );
 }
