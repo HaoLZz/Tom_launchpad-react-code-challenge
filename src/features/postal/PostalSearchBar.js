@@ -3,7 +3,7 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -78,6 +78,9 @@ export default function PostalSearchBar({
             autoFocus
             value={searchInput}
             onInput={onSearchInput}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') onSubmit();
+            }}
           />
         </Search>
       </Box>
