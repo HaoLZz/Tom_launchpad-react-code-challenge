@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { Paper } from '@mui/material';
 
 const MapContainer = ({
-  zoom = 10,
+  zoom = 13,
   center = {
-    lat: 41.3851,
-    lng: 2.1734,
+    lat: 29.6132,
+    lng: -82.3873,
   },
 }) => {
   const { isLoaded } = useJsApiLoader({
@@ -20,29 +21,21 @@ const MapContainer = ({
 
   const [map, setMap] = useState(null);
 
-  const onLoad = useCallback(
-    function callback(map) {
-      const bounds = new window.google.maps.LatLngBounds(center);
-      map.fitBounds(bounds);
-      setMap(map);
-    },
-    [center],
-  );
-
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
   }, []);
 
   return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={zoom}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      <> Marker</>
-    </GoogleMap>
+    <Paper elevation={3} sx={{ padding: 1 }}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={zoom}
+        onUnmount={onUnmount}
+      >
+        <Marker position={center} />
+      </GoogleMap>
+    </Paper>
   ) : (
     <></>
   );
