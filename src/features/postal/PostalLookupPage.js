@@ -76,7 +76,15 @@ export default function PostalLookupPage() {
 
   return (
     <Container>
-      <Typography variant="h2" component="h2" marginY={5}>
+      <Typography
+        variant="h2"
+        component="h2"
+        marginY={5}
+        marginTop={5}
+        gutterBottom
+        textTransform="capitalize"
+        sx={{ fontSize: { xs: '1.5rem', md: '2.5rem' } }}
+      >
         Postal Code Search
       </Typography>
       <PostalSearchBar
