@@ -54,7 +54,7 @@ export default function PostSearchBar({ searchInput = '', setSearchInput }) {
   const onSearchInput = (e) => {
     setSearchInput(e.target.value);
     const postId = Number(e.target.value);
-    if (!Number.isNaN(postId) && !(postId === 0)) {
+    if (!isNaN(postId) && !(postId === 0)) {
       dispatch(fetchPostById(postId));
     }
   };

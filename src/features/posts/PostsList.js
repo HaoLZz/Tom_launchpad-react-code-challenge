@@ -15,21 +15,6 @@ import EditPostModal from './EditPostModal';
 import { Spinner } from '../../components/Spinner';
 import PostSearchBar from './PostSearchBar';
 
-// const PostControlsButtonGroup = ({ post, deletePostHandler }) => {
-//   return (
-//     <ButtonGroup
-//       variant="text"
-//       color="primary"
-//       aria-label="secondary text button group"
-//     >
-//       <EditPostModal post={post} />
-//       <Button onClick={(post) => deletePostHandler(post)}>
-//         <DeleteIcon fontSize="small" />
-//       </Button>
-//     </ButtonGroup>
-//   );
-// };
-
 export default function PostsList() {
   // Lifted searchInput state from PostSearchBar to parent
   const [searchInput, setSearchInput] = useState('');
