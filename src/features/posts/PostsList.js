@@ -45,6 +45,23 @@ export default function PostsList() {
     <Grid item xs={12} md={4} flexShrink={1} key={post.id}>
       <Paper elevation={3} sx={{ paddingX: 2, paddingY: 1 }}>
         <Box
+          sx={{
+            display: 'inline-block',
+            backgroundColor: 'lightgray',
+            marginY: '5px',
+            padding: '0.35rem 0.5rem',
+            borderRadius: '5px',
+          }}
+        >
+          <Typography
+            variant="subtitle2"
+            component="span"
+            sx={{ textTransform: 'uppercase' }}
+          >
+            ID#{post.id}
+          </Typography>
+        </Box>
+        <Box
           marginBottom={2}
           sx={{
             display: 'flex',
@@ -66,13 +83,13 @@ export default function PostsList() {
             </Button>
           </ButtonGroup>
         </Box>
-        <Box marginBottom={1}>
-          <Typography variant="subtitle1" component="span">
-            Post ID#: {post.id}
-          </Typography>
-        </Box>
         <Box>
-          <Typography variant="body1" component="p" overflow="hidden">
+          <Typography
+            variant="body1"
+            component="p"
+            overflow="hidden"
+            marginY={1}
+          >
             {post.body}
           </Typography>
         </Box>

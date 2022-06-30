@@ -10,7 +10,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddIcon from '@mui/icons-material/Add';
+import Fab from '@mui/material/Fab';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import { nanoid } from '@reduxjs/toolkit';
@@ -53,12 +54,14 @@ export default function AddPostModal() {
 
   return (
     <>
-      <Button
+      <Fab
+        color="secondary"
+        aria-label="add"
+        size="medium"
         onClick={handleClickOpen}
-        endIcon={<AddCircleIcon fontSize="large" />}
       >
-        Add post
-      </Button>
+        <AddIcon />
+      </Fab>
       <Dialog fullWidth open={open} onClose={handleClose}>
         <DialogTitle>Add a New Post</DialogTitle>
         <DialogContent>
