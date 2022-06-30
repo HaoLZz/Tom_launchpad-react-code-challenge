@@ -2,7 +2,10 @@
 // https://kentcdodds.com/blog/replace-axios-with-a-simple-custom-fetch-wrapper
 
 export async function client(endpoint, method, { body, ...customConfig } = {}) {
-  const headers = { 'Content-Type': 'application/json; charset=UTF-8' };
+  const headers =
+    method === 'POST' || method === 'PUT'
+      ? { 'Content-Type': 'application/json; charset=UTF-8' }
+      : {};
 
   const config = {
     method: method,

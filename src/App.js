@@ -5,6 +5,7 @@ import './App.css';
 import ResponsiveAppBar from './app/AppBar';
 import PostsList from './features/posts/PostsList';
 import UniversitiesPage from './features/universities/UniversitiesPage';
+import PostalLookupPage from './features/postal/PostalLookupPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             }
           />
           <Route path="/universities" element={<UniversitiesPage />} />
+          <Route path="/postal-lookup" element={<PostalLookupPage />} />
         </Routes>
       </div>
     </Router>
