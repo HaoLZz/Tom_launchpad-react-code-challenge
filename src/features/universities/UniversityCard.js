@@ -4,8 +4,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import DomainIcon from '@mui/icons-material/Domain';
 import { blue } from '@mui/material/colors';
@@ -43,10 +43,13 @@ export default function UniversityCard({ university }) {
           {university.alpha_two_code}
         </Avatar>
         <Typography variant="h5" component="div" gutterBottom>
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={{ xs: 1, md: 2 }}
-            sx={{ flexShrink: '1', flexWrap: 'true' }}
+          <Box
+            sx={{
+              display: 'inline-flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: { xs: '5px', sm: '12px' },
+              flexWrap: 'wrap',
+            }}
           >
             {university.web_pages.map((page) => {
               return (
@@ -60,7 +63,7 @@ export default function UniversityCard({ university }) {
                 />
               );
             })}
-          </Stack>
+          </Box>
         </Typography>
         <Typography color="text.secondary" variant="body2">
           {university['state-province'] || <br />}
@@ -68,10 +71,13 @@ export default function UniversityCard({ university }) {
         <Typography variant="subtitle1" gutterBottom>
           {university.country}
         </Typography>
-        <Stack
-          direction={{ xs: 'column', md: 'row' }}
-          spacing={{ xs: 1, md: 2 }}
-          sx={{ flexShrink: '1', flexWrap: 'true' }}
+        <Box
+          sx={{
+            display: 'inline-flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: { xs: '5px', sm: '12px' },
+            flexWrap: 'wrap',
+          }}
         >
           {university.domains.map((domain) => {
             return (
@@ -85,7 +91,7 @@ export default function UniversityCard({ university }) {
               />
             );
           })}
-        </Stack>
+        </Box>
       </CardContent>
       <CardActions>
         <Button size="small">Rate this university</Button>
