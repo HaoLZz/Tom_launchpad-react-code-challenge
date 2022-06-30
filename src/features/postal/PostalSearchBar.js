@@ -47,7 +47,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PostalSearchBar({ searchInput = '', setSearchInput }) {
+export default function PostalSearchBar({
+  searchInput = '',
+  setSearchInput,
+  onSubmit,
+}) {
   const onSearchInput = (e) => {
     setSearchInput(e.target.value);
   };
@@ -84,7 +88,9 @@ export default function PostalSearchBar({ searchInput = '', setSearchInput }) {
           margin: { xs: '15px auto', md: '0' },
         }}
       >
-        <Button variant="contained">Submit</Button>
+        <Button variant="contained" onClick={onSubmit}>
+          Submit
+        </Button>
       </Box>
     </Box>
   );

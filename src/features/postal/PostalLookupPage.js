@@ -10,11 +10,21 @@ import MapIcon from '@mui/icons-material/Map';
 import PostalSearchBar from './PostalSearchBar';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchInfoByPostal } from './postalSlice';
 
 export default function PostalLookupPage() {
   const [searchInput, setSearchInput] = useState('');
   const data = useSelector((state) => state.postal.data);
+  const postalStatus = useSelector((state) => state.postal.status);
+  const error = useSelector((state) => state.postal.error);
+  const dispatch = useDispatch();
   const [place] = data.places;
+
+  const onSubmit = () => {
+    if (searchInput && !isNaN(searchInput) && postalStatus === 'idle') {
+      dispatch(fetchInfoByPostal(searchInput));
+    }
+  };
 
   return (
     <Container>
@@ -24,6 +34,7 @@ export default function PostalLookupPage() {
       <PostalSearchBar
         searchInput={searchInput}
         setSearchInput={setSearchInput}
+        onSubmit={onSubmit}
       />
       <Paper
         elevation={3}
