@@ -16,7 +16,6 @@ import { Spinner } from '../../components/Spinner';
 import PostSearchBar from './PostSearchBar';
 
 export default function PostsList() {
-  // Lifted searchInput state from PostSearchBar to parent
   const [searchInput, setSearchInput] = useState('');
   const dispatch = useDispatch();
   const postStatus = useSelector((state) => state.posts.status);

@@ -34,7 +34,6 @@ const universitiesSlice = createSlice({
       .addCase(fetchUniversities.fulfilled, (state, action) => {
         state.status = 'succeeded';
         const { data, country } = action.payload;
-        console.log(action.payload);
         state.data = data;
         state.lastSearchedCountry = country;
       })
