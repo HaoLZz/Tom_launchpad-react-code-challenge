@@ -57,7 +57,7 @@ export default function AddPostModal() {
       <Fab
         color="secondary"
         aria-label="add"
-        size="medium"
+        size="small"
         onClick={handleClickOpen}
       >
         <AddIcon />

@@ -65,7 +65,13 @@ export default function UniversitiesPage() {
         marginTop={5}
         gutterBottom
         textTransform="capitalize"
-        sx={{ fontSize: { xs: '1.25rem', md: '2.5rem' } }}
+        sx={{
+          fontSize: { xs: '1.25rem', md: '2.5rem' },
+          fontWeight: '500',
+          backgroundImage: 'conic-gradient(#553c9a, #ee4b2b, #00c2cb);',
+          color: 'transparent',
+          backgroundClip: 'text',
+        }}
       >
         Give Your Rating for Universities around the world
       </Typography>

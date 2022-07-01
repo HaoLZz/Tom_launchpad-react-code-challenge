@@ -83,7 +83,13 @@ export default function PostalLookupPage() {
         marginTop={5}
         gutterBottom
         textTransform="capitalize"
-        sx={{ fontSize: { xs: '1.5rem', md: '2.5rem' } }}
+        sx={{
+          fontSize: { xs: '1.5rem', md: '2.5rem' },
+          fontWeight: '500',
+          backgroundImage: 'radial-gradient(#553c9a, #ee4b2b)',
+          color: 'transparent',
+          backgroundClip: 'text',
+        }}
       >
         Postal Code Search
       </Typography>

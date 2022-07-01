@@ -109,8 +109,20 @@ export default function PostsList() {
 
   return (
     <>
-      <Typography variant="h2" component="h2" marginY={5}>
-        Posts
+      <Typography
+        variant="h2"
+        component="h2"
+        marginY={5}
+        textTransform="capitalize"
+        sx={{
+          fontSize: { xs: '1.5rem', md: '2.5rem' },
+          fontWeight: '500',
+          backgroundImage: 'linear-gradient(to left, #553c9a, #b393d3)',
+          color: 'transparent',
+          backgroundClip: 'text',
+        }}
+      >
+        A penny for your post
       </Typography>
       <Box
         sx={{
