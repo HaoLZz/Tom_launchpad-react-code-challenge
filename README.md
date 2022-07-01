@@ -43,7 +43,10 @@ The entire application is divided into three pages : Home, Universites and Posta
 
 ### Links
 
-- Live Site: [U-Rating.com]()
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0b89ca3e-6350-4e73-aa5f-4b20ed3e3947/deploy-status?branch=main)](https://app.netlify.com/sites/friendly-salamander-5ecec0/deploys)
+
+- Live Site: [U-Rating.com](https://friendly-salamander-5ecec0.netlify.app/)
+  - **(Universities page is currently not working due to the fact that the universities API only support insecure http which is blocked by default)**
 
 ## My process
 
